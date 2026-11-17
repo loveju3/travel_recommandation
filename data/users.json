@@ -1,0 +1,487 @@
+[
+ {
+  "id": "U01",
+  "name": "王建國",
+  "age": 63,
+  "gender": "男",
+  "city": "台北市",
+  "home_airport": "TPE",
+  "household": "夫妻兩人（退休）",
+  "member_tier": "鑽石卡",
+  "budget_min": 30000,
+  "budget_max": 70000,
+  "preferred_days": [
+   5,
+   8
+  ],
+  "styles": [
+   "溫泉",
+   "慢遊",
+   "文化"
+  ],
+  "note": "退休公務員，膝蓋不好不能走太多，最討厭購物站和每天換飯店。",
+  "recent_searches": [
+   "日本溫泉 不換飯店",
+   "郵輪 長輩"
+  ],
+  "orders": [
+   {
+    "order_id": "O0001",
+    "product_id": "P0032",
+    "departure_date": "2025-07-18",
+    "pax": 2,
+    "amount": 111800,
+    "rating": 4,
+    "review": "CP 值高，推薦。"
+   },
+   {
+    "order_id": "O0003",
+    "product_id": "P0168",
+    "departure_date": "2025-07-23",
+    "pax": 2,
+    "amount": 25800,
+    "rating": 5,
+    "review": "非常滿意，領隊很專業，下次還會再參加！"
+   },
+   {
+    "order_id": "O0002",
+    "product_id": "P0036",
+    "departure_date": "2026-05-11",
+    "pax": 2,
+    "amount": 79800,
+    "rating": 5,
+    "review": "非常滿意，領隊很專業，下次還會再參加！"
+   }
+  ],
+  "wishlist": [
+   "P0145",
+   "P0067"
+  ]
+ },
+ {
+  "id": "U02",
+  "name": "林佳穎",
+  "age": 36,
+  "gender": "女",
+  "city": "新北市",
+  "home_airport": "TPE",
+  "household": "夫妻＋兩個小孩（5歲、8歲）",
+  "member_tier": "金卡",
+  "budget_min": 20000,
+  "budget_max": 45000,
+  "preferred_days": [
+   4,
+   6
+  ],
+  "styles": [
+   "親子",
+   "主題樂園",
+   "海島"
+  ],
+  "note": "上班族媽媽，寒暑假一定帶小孩出國，重視飯店舒適與孩子玩得開心。",
+  "recent_searches": [
+   "寒假 親子",
+   "沖繩 水族館"
+  ],
+  "orders": [
+   {
+    "order_id": "O0006",
+    "product_id": "P0043",
+    "departure_date": "2024-07-01",
+    "pax": 4,
+    "amount": 91600,
+    "rating": 3,
+    "review": "還可以，但飯店離市區有點遠。"
+   },
+   {
+    "order_id": "O0004",
+    "product_id": "P0094",
+    "departure_date": "2024-07-31",
+    "pax": 4,
+    "amount": 151600,
+    "rating": 4,
+    "review": "整體不錯，有一天行程稍微趕了一點。"
+   },
+   {
+    "order_id": "O0005",
+    "product_id": "P0095",
+    "departure_date": "2025-11-19",
+    "pax": 4,
+    "amount": 115600,
+    "rating": 3,
+    "review": "還可以，但飯店離市區有點遠。"
+   }
+  ],
+  "wishlist": [
+   "P0165",
+   "P0042"
+  ]
+ },
+ {
+  "id": "U03",
+  "name": "陳柏翰",
+  "age": 28,
+  "gender": "男",
+  "city": "台中市",
+  "home_airport": "RMQ",
+  "household": "單身",
+  "member_tier": "一般會員",
+  "budget_min": 15000,
+  "budget_max": 60000,
+  "preferred_days": [
+   5,
+   10
+  ],
+  "styles": [
+   "健行",
+   "冒險",
+   "自然"
+  ],
+  "note": "戶外運動愛好者，喜歡登山健行與極限運動，不喜歡走馬看花的團。",
+  "recent_searches": [
+   "健行",
+   "潛水"
+  ],
+  "orders": [
+   {
+    "order_id": "O0008",
+    "product_id": "P0080",
+    "departure_date": "2024-09-27",
+    "pax": 1,
+    "amount": 16900,
+    "rating": 4,
+    "review": "整體不錯，有一天行程稍微趕了一點。"
+   },
+   {
+    "order_id": "O0007",
+    "product_id": "P0158",
+    "departure_date": "2025-06-09",
+    "pax": 1,
+    "amount": 91900,
+    "rating": 4,
+    "review": "整體不錯，有一天行程稍微趕了一點。"
+   },
+   {
+    "order_id": "O0009",
+    "product_id": "P0082",
+    "departure_date": "2025-08-21",
+    "pax": 1,
+    "amount": 64900,
+    "rating": 4,
+    "review": "景點很美，餐食普通。"
+   }
+  ],
+  "wishlist": [
+   "P0054",
+   "P0076"
+  ]
+ },
+ {
+  "id": "U04",
+  "name": "張雅婷",
+  "age": 31,
+  "gender": "女",
+  "city": "台北市",
+  "home_airport": "TPE",
+  "household": "新婚夫妻",
+  "member_tier": "金卡",
+  "budget_min": 60000,
+  "budget_max": 150000,
+  "preferred_days": [
+   5,
+   10
+  ],
+  "styles": [
+   "浪漫",
+   "奢華",
+   "海島"
+  ],
+  "note": "剛結婚，重視拍照與質感住宿，年底想規劃第二次旅行紀念日。",
+  "recent_searches": [
+   "蜜月 villa",
+   "結婚紀念日 旅行"
+  ],
+  "orders": [
+   {
+    "order_id": "O0010",
+    "product_id": "P0090",
+    "departure_date": "2025-05-20",
+    "pax": 2,
+    "amount": 59800,
+    "rating": 4,
+    "review": "景點很美，餐食普通。"
+   }
+  ],
+  "wishlist": [
+   "P0026",
+   "P0089"
+  ]
+ },
+ {
+  "id": "U05",
+  "name": "黃志明",
+  "age": 45,
+  "gender": "男",
+  "city": "高雄市",
+  "home_airport": "KHH",
+  "household": "夫妻兩人",
+  "member_tier": "白金卡",
+  "budget_min": 25000,
+  "budget_max": 55000,
+  "preferred_days": [
+   4,
+   5
+  ],
+  "styles": [
+   "美食",
+   "購物"
+  ],
+  "note": "科技公司主管，只能請短假，出國就是為了吃。偏好高雄出發。",
+  "recent_searches": [
+   "高雄出發 美食",
+   "螃蟹"
+  ],
+  "orders": [
+   {
+    "order_id": "O0012",
+    "product_id": "P0005",
+    "departure_date": "2025-06-18",
+    "pax": 2,
+    "amount": 99800,
+    "rating": 4,
+    "review": "整體不錯，有一天行程稍微趕了一點。"
+   },
+   {
+    "order_id": "O0011",
+    "product_id": "P0056",
+    "departure_date": "2025-08-02",
+    "pax": 2,
+    "amount": 43800,
+    "rating": 3,
+    "review": "還可以，但飯店離市區有點遠。"
+   },
+   {
+    "order_id": "O0013",
+    "product_id": "P0009",
+    "departure_date": "2025-10-18",
+    "pax": 2,
+    "amount": 49800,
+    "rating": 5,
+    "review": "飯店和餐食都超出預期。"
+   }
+  ],
+  "wishlist": [
+   "P0047",
+   "P0014"
+  ]
+ },
+ {
+  "id": "U06",
+  "name": "李美華",
+  "age": 56,
+  "gender": "女",
+  "city": "台南市",
+  "home_airport": "TPE",
+  "household": "與姊妹結伴",
+  "member_tier": "鑽石卡",
+  "budget_min": 80000,
+  "budget_max": 160000,
+  "preferred_days": [
+   9,
+   13
+  ],
+  "styles": [
+   "藝術",
+   "文化",
+   "古蹟"
+  ],
+  "note": "退休美術老師，每年一趟歐洲深度旅行，偏好有專業導覽的行程。",
+  "recent_searches": [
+   "歐洲 美術館",
+   "深度旅遊"
+  ],
+  "orders": [
+   {
+    "order_id": "O0015",
+    "product_id": "P0138",
+    "departure_date": "2025-11-25",
+    "pax": 2,
+    "amount": 235800,
+    "rating": 3,
+    "review": "行程和預期有落差，購物站太多。"
+   },
+   {
+    "order_id": "O0014",
+    "product_id": "P0125",
+    "departure_date": "2026-02-25",
+    "pax": 2,
+    "amount": 185800,
+    "rating": 5,
+    "review": "行程安排得很好，家人都很開心。"
+   }
+  ],
+  "wishlist": [
+   "P0137",
+   "P0068"
+  ]
+ },
+ {
+  "id": "U07",
+  "name": "劉宇軒",
+  "age": 22,
+  "gender": "男",
+  "city": "台北市",
+  "home_airport": "TPE",
+  "household": "學生（與同學結伴）",
+  "member_tier": "一般會員",
+  "budget_min": 8000,
+  "budget_max": 25000,
+  "preferred_days": [
+   3,
+   5
+  ],
+  "styles": [
+   "小資",
+   "購物",
+   "美食"
+  ],
+  "note": "大學生，打工存錢出國，追求 CP 值，喜歡自由行。",
+  "recent_searches": [
+   "便宜 機加酒",
+   "首爾 自由行"
+  ],
+  "orders": [
+   {
+    "order_id": "O0017",
+    "product_id": "P0066",
+    "departure_date": "2025-03-24",
+    "pax": 1,
+    "amount": 11900,
+    "rating": 5,
+    "review": "飯店和餐食都超出預期。"
+   },
+   {
+    "order_id": "O0016",
+    "product_id": "P0058",
+    "departure_date": "2026-07-30",
+    "pax": 1,
+    "amount": 12900,
+    "rating": 4,
+    "review": "景點很美，餐食普通。"
+   }
+  ],
+  "wishlist": [
+   "P0061",
+   "P0077"
+  ]
+ },
+ {
+  "id": "U08",
+  "name": "吳淑芬",
+  "age": 42,
+  "gender": "女",
+  "city": "新竹市",
+  "home_airport": "TPE",
+  "household": "單身",
+  "member_tier": "白金卡",
+  "budget_min": 40000,
+  "budget_max": 120000,
+  "preferred_days": [
+   5,
+   11
+  ],
+  "styles": [
+   "攝影",
+   "季節限定",
+   "自然"
+  ],
+  "note": "業餘攝影師，專門追季節限定的風景：櫻花、楓葉、雪景、極光。",
+  "recent_searches": [
+   "賞楓 攝影",
+   "雪景"
+  ],
+  "orders": [
+   {
+    "order_id": "O0019",
+    "product_id": "P0030",
+    "departure_date": "2024-10-13",
+    "pax": 1,
+    "amount": 57900,
+    "rating": 5,
+    "review": "行程安排得很好，家人都很開心。"
+   },
+   {
+    "order_id": "O0018",
+    "product_id": "P0050",
+    "departure_date": "2026-08-19",
+    "pax": 1,
+    "amount": 52900,
+    "rating": 5,
+    "review": "非常滿意，領隊很專業，下次還會再參加！"
+   }
+  ],
+  "wishlist": [
+   "P0151",
+   "P0175"
+  ]
+ },
+ {
+  "id": "U09",
+  "name": "蔡家豪",
+  "age": 37,
+  "gender": "男",
+  "city": "台北市",
+  "home_airport": "TPE",
+  "household": "夫妻＋一個小孩（10歲）",
+  "member_tier": "金卡",
+  "budget_min": 40000,
+  "budget_max": 90000,
+  "preferred_days": [
+   5,
+   9
+  ],
+  "styles": [
+   "滑雪",
+   "雪景",
+   "冒險"
+  ],
+  "note": "每年冬天都要去滑雪，最近開始帶孩子一起學。",
+  "recent_searches": [
+   "滑雪 教練",
+   "雪地 親子"
+  ],
+  "orders": [
+   {
+    "order_id": "O0020",
+    "product_id": "P0049",
+    "departure_date": "2024-10-27",
+    "pax": 3,
+    "amount": 131700,
+    "rating": 4,
+    "review": "CP 值高，推薦。"
+   }
+  ],
+  "wishlist": [
+   "P0132",
+   "P0131"
+  ]
+ },
+ {
+  "id": "U10",
+  "name": "鄭小姐（新會員）",
+  "age": 30,
+  "gender": "女",
+  "city": "台北市",
+  "home_airport": "TPE",
+  "household": "未填寫",
+  "member_tier": "新會員",
+  "budget_min": null,
+  "budget_max": null,
+  "preferred_days": null,
+  "styles": [],
+  "note": "剛註冊的新會員，沒有任何消費紀錄（冷啟動情境）。",
+  "recent_searches": [],
+  "orders": [],
+  "wishlist": []
+ }
+]

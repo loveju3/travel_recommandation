@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>旅遊商品語意搜尋推薦 Demo</title>
+<style>
+:root{
+  --bg:#f6f4ef; --panel:#fff; --ink:#1d2433; --muted:#6b7385; --line:#e6e2d8;
+  --accent:#d6452f; --accent-soft:#fbe9e5; --navy:#22314f;
+  --rel:#3b6fd8; --per:#e8892b; --biz:#8a94a6; --ok:#1f9d6a; --warn:#c2410c;
+  --radius:12px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;font-size:14px;line-height:1.5}
+header{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20}
+header h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.5px}
+header h1 span{color:#ffb4a6;font-weight:500;margin-left:6px;font-size:13px}
+.badges{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.badge{font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.12)}
+.badge.on{background:#1f9d6a}.badge.off{background:#7c2d12}
+nav.tabs{display:flex;gap:4px;padding:0 24px;background:var(--navy)}
+nav.tabs button{background:none;border:0;color:#b9c2d6;padding:10px 16px;font-size:14px;cursor:pointer;border-bottom:3px solid transparent;font-family:inherit}
+nav.tabs button.active{color:#fff;border-bottom-color:var(--accent)}
+.layout{display:grid;grid-template-columns:300px 1fr;gap:20px;padding:20px 24px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.panel h3{margin:0 0 10px;font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.5px}
+aside{position:sticky;top:110px;max-height:calc(100vh - 130px);overflow:auto}
+.persona{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;cursor:pointer;border:1px solid transparent}
+.persona:hover{background:#faf8f3}
+.persona.active{background:var(--accent-soft);border-color:#f3c3b8}
+.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none;font-size:14px}
+.persona .nm{font-weight:600}.persona .sub{font-size:12px;color:var(--muted)}
+.profile dl{display:grid;grid-template-columns:72px 1fr;gap:4px 8px;margin:0;font-size:13px}
+.profile dt{color:var(--muted)}.profile dd{margin:0}
+.profile .note{background:#faf8f3;border-radius:8px;padding:8px 10px;font-size:13px;margin:10px 0;color:#444}
+.order{font-size:12px;padding:6px 8px;border-left:3px solid var(--per);background:#fffaf4;margin:4px 0;border-radius:0 6px 6px 0;cursor:pointer}
+.chip{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:#eef1f6;color:#36435c;margin:2px 3px 2px 0;white-space:nowrap}
+.chip.tok{background:#fff3d6;color:#7a5500;font-family:ui-monospace,Menlo,monospace}
+.chip.hit{background:#dcf5e9;color:#0f6b47}
+.chip.filter{background:#e5ecfb;color:#24479a}
+.chip.reason{background:#f1f3f7;color:#334}
+.chip.reason.warn{background:#fdecec;color:#b42318}
+.chip.ex{cursor:pointer;background:#fff;border:1px solid var(--line);color:var(--ink)}
+.chip.ex:hover{border-color:var(--accent);color:var(--accent)}
+.searchbar{display:flex;gap:10px}
+.searchbar input{flex:1;font-size:16px;padding:12px 16px;border:2px solid var(--line);border-radius:10px;font-family:inherit;outline:none}
+.searchbar input:focus{border-color:var(--accent)}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:0 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn:disabled{opacity:.5}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.controls{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:12px;font-size:13px}
+.controls label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.slider{display:flex;align-items:center;gap:6px}
+.slider input{width:90px}
+.slider .dot{width:10px;height:10px;border-radius:2px}
+.examples{margin-top:10px}
+.analysis{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:12px;margin-top:14px}
+.analysis .panel{padding:12px 14px}
+.analysis .sem{font-size:13px;color:#333;background:#f6f8fc;border-radius:8px;padding:6px 10px;margin-top:6px}
+.timing{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted)}
+.notice{font-size:12px;padding:6px 10px;border-radius:8px;background:#fff6e5;color:#8a5300;margin-top:6px}
+.cols{display:grid;gap:14px;margin-top:14px}
+.cols.three{grid-template-columns:repeat(3,1fr)}
+.cols.one{grid-template-columns:1fr}
+.col-head{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.col-head h2{font-size:15px;margin:0}
+.col-head .desc{font-size:12px;color:var(--muted)}
+.col-head .hits{margin-left:auto;font-size:12px;font-weight:600;color:var(--ok)}
+.col.keyword .col-head h2{color:#8a6100}.col.vector .col-head h2{color:var(--rel)}.col.hybrid .col-head h2{color:var(--accent)}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer;position:relative;transition:box-shadow .15s}
+.card:hover{box-shadow:0 4px 16px rgba(30,40,60,.08)}
+.card.relevant{border-left:4px solid var(--ok)}
+.card .rank{position:absolute;top:10px;right:12px;font-size:12px;color:var(--muted);font-weight:700}
+.card .title{font-weight:600;font-size:13.5px;padding-right:28px;line-height:1.4}
+.card .meta{font-size:12px;color:var(--muted);margin:4px 0}
+.card .price{color:var(--accent);font-weight:700}
+.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:#eef0f4;margin:6px 0 2px}
+.bar div{height:100%}
+.scoreline{font-size:11.5px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.explain{font-size:12.5px;color:#7a2e1f;background:var(--accent-soft);border-radius:6px;padding:5px 8px;margin-top:6px}
+.empty{color:var(--muted);text-align:center;padding:40px 0}
+.legend{display:flex;gap:12px;font-size:12px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px;background:var(--c)}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-3px}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(20,26,40,.45);display:none;align-items:center;justify-content:center;z-index:50}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:14px;max-width:760px;width:92%;max-height:86vh;overflow:auto;padding:22px 26px}
+.modal h2{margin:0 0 6px;font-size:18px}
+.modal table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+.modal td,.modal th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.day{display:grid;grid-template-columns:56px 1fr;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.day b{color:var(--accent)}
+/* eval */
+.page{padding:20px 24px;display:none}
+.page.show{display:block}
+table.grid{border-collapse:collapse;width:100%;background:#fff;font-size:13px}
+table.grid th,table.grid td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left}
+table.grid th{background:#faf8f3;color:var(--muted);font-weight:600}
+td.num{font-family:ui-monospace,Menlo,monospace}
+td.best{font-weight:700;color:var(--ok)}
+.metricbars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.mb .row{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:13px}
+.mb .row .lbl{width:120px}
+.mb .row .track{flex:1;height:14px;background:#eef0f4;border-radius:4px;overflow:hidden}
+.mb .row .fill{height:100%}
+/* arch */
+.flow{display:flex;flex-direction:column;gap:10px;max-width:980px}
+.flow .stage{display:grid;grid-template-columns:160px 1fr;gap:14px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.flow .stage h4{margin:0;color:var(--accent)}
+.flow .stage p{margin:0;font-size:13px;color:#333}
+.flow .arrow{text-align:center;color:var(--muted)}
+@media (max-width:1200px){.cols.three{grid-template-columns:1fr}.analysis{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>旅遊商品語意搜尋推薦 Demo<span>Jieba → Embedding → Hybrid + 個人化</span></h1>
+  <div class="badges" id="badges"></div>
+</header>
+<nav class="tabs">
+  <button class="active" data-page="search">搜尋比較</button>
+  <button data-page="eval">離線評估</button>
+  <button data-page="arch">架構說明</button>
+</nav>
+
+<!-- ───────── 搜尋頁 ───────── -->
+<div class="page show" id="page-search" style="padding:0">
+<div class="layout">
+  <aside class="panel">
+    <h3>切換使用者角色</h3>
+    <div id="personas"></div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
+    <div class="profile" id="profile"></div>
+  </aside>
+
+  <main>
+    <div class="panel">
+      <div class="searchbar">
+        <input id="q" placeholder="想去哪裡？例如：帶爸媽去日本泡溫泉，不要太累" autocomplete="off">
+        <button class="btn" id="go">搜尋</button>
+      </div>
+      <div class="controls">
+        <label>顯示前 <select id="topn"><option>5</option><option selected>10</option><option>20</option></select> 筆</label>
+        <label><input type="checkbox" id="llmParse" checked> LLM 解析 query</label>
+        <label><input type="checkbox" id="llmExplain"> LLM 推薦理由</label>
+        <label><input type="checkbox" id="compare" checked> 三欄比較</label>
+        <div class="slider"><span class="dot" style="background:var(--rel)"></span>相關性 <input type="range" id="wRel" min="0" max="100" value="60"><b id="vRel">0.60</b></div>
+        <div class="slider"><span class="dot" style="background:var(--per)"></span>個人化 <input type="range" id="wPer" min="0" max="100" value="25"><b id="vPer">0.25</b></div>
+        <div class="slider"><span class="dot" style="background:var(--biz)"></span>商業 <input type="range" id="wBiz" min="0" max="100" value="15"><b id="vBiz">0.15</b></div>
+      </div>
+      <div class="examples" id="examples"></div>
+    </div>
+
+    <div class="analysis" id="analysis" style="display:none">
+      <div class="panel"><h3>① Jieba 斷詞（舊方法）</h3><div id="tokens"></div></div>
+      <div class="panel"><h3>② LLM Query 解析 → 結構化條件</h3><div id="parsed"></div></div>
+      <div class="panel"><h3>③ 執行資訊</h3><div id="meta"></div></div>
+    </div>
+
+    <div class="cols three" id="cols"></div>
+  </main>
+</div>
+</div>
+
+<!-- ───────── 評估頁 ───────── -->
+<div class="page" id="page-eval">
+  <div class="panel">
+    <h3>離線評估：人工標註 query → 計算三種方法的排序品質（不含個人化）</h3>
+    <div class="controls" style="margin-top:0">
+      <label>K = <select id="evalK"><option>5</option><option selected>10</option><option>20</option></select></label>
+      <label><input type="checkbox" id="evalLlm" checked> Hybrid 使用 LLM 解析</label>
+      <button class="btn" id="runEval" style="padding:8px 18px">執行評估</button>
+      <span class="timing" id="evalStatus"></span>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin:10px 0 0">指標說明：Recall@K＝找回多少相關商品；NDCG@K＝相關商品是否排在前面；MRR＝第一個正確結果出現得多早；Precision@K＝前 K 筆中相關商品的比例。</p>
+  </div>
+  <div id="evalOut"></div>
+</div>
+
+<!-- ───────── 架構頁 ───────── -->
+<div class="page" id="page-arch">
+  <div class="flow">
+    <div class="stage"><h4>0. 離線建置</h4><p>商品「摘要文字」與「每日行程文字」各自產生 embedding（OpenAI text-embedding-3-small，1536 維）存進 Neon pgvector，並建 HNSW 索引；同時用 Jieba 斷詞建立 tsvector 全文索引（標題權重 A、標籤/特色 B、內文 C）。使用者偏好向量＝買過的商品（評分 × 時間衰減）＋收藏＋近期搜尋＋個人描述的加權平均。</p></div>
+    <div class="arrow">▼</div>
+    <div class="stage"><h4>1. Query 理解</h4><p>LLM 把自然語言拆成「結構化條件」（目的地、預算、天數、出發地、月份、類型、標籤）與「語意意圖」（改寫成完整描述給向量搜尋用）。可關閉，關閉時直接用原始 query。</p></div>
+    <div class="arrow">▼</div>
+    <div class="stage"><h4>2. 過濾 + 雙路召回</h4><p>結構化條件轉 SQL WHERE 硬過濾；在過濾後的集合裡同時跑 <b>Jieba 關鍵字召回</b>（擅長專有名詞，如「合掌村」）與 <b>向量召回</b>（擅長語意，如「帶爸媽」≈「長輩友善」）。結果太少時自動放寬條件。</p></div>
+    <div class="arrow">▼</div>
+    <div class="stage"><h4>3. RRF 融合</h4><p>Reciprocal Rank Fusion：score = Σ 1/(60+rank)。不需校準兩種分數的尺度，是業界常見的 hybrid search 作法。再加上 cosine 與標籤命中率得到「相關性分數」。</p></div>
+    <div class="arrow">▼</div>
+    <div class="stage"><h4>4. 個人化重排</h4><p>最終分數 = α·相關性 + β·個人化 + γ·商業因素。個人化＝使用者向量相似度 + 規則（預算、天數、出發機場、家庭組成、風格標籤）；商業＝熱門度、評分、名額急迫性、是否有可售團位。已買過的商品降權；新會員（冷啟動）自動把 β 分給相關性與商業。</p></div>
+    <div class="arrow">▼</div>
+    <div class="stage"><h4>5. 可解釋性</h4><p>每筆結果顯示分數拆解與命中原因；可選擇讓 LLM 依使用者輪廓寫一句推薦理由。所有搜尋寫入 search_logs，後續可接點擊資料做 Learning-to-Rank。</p></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = n => n == null ? "—" : Number(n).toLocaleString("zh-TW");
+const COLORS = ["#d6452f","#3b6fd8","#1f9d6a","#e8892b","#8b5cf6","#0e7490","#be185d","#4d7c0f","#b45309","#64748b"];
+const AIRPORT = {TPE:"桃園", KHH:"高雄", RMQ:"台中"};
+let state = {user:null, users:[], cfg:null, last:null};
+
+async function api(path, opt){ const r = await fetch(path, opt); if(!r.ok) throw new Error(await r.text()); return r.json(); }
+
+async function init(){
+  state.cfg = await api("/api/config");
+  $("#badges").innerHTML = `<span class="badge">Embedding：${esc(state.cfg.embed_provider)} / ${esc(state.cfg.embed_model)}</span>
+    <span class="badge ${state.cfg.llm_available?'on':'off'}">LLM ${state.cfg.llm_available? esc(state.cfg.chat_model) : "未啟用"}</span>`;
+  if(!state.cfg.llm_available){ ["#llmParse","#llmExplain","#evalLlm"].forEach(s=>{$(s).checked=false;$(s).disabled=true;}); }
+  $("#examples").innerHTML = "<span style='font-size:12px;color:var(--muted);margin-right:4px'>範例：</span>" +
+    state.cfg.example_queries.map((q,i)=>`<span class="chip ex" ${i>=10?'style="display:none" data-more':''}>${esc(q)}</span>`).join("") +
+    `<span class="chip ex" id="moreEx" style="color:var(--muted)">更多 ▾</span>`;
+  $("#examples").onclick = e => {
+    if(e.target.id==="moreEx"){ document.querySelectorAll("[data-more]").forEach(x=>x.style.display=""); e.target.remove(); return; }
+    if(e.target.classList.contains("ex")){ $("#q").value = e.target.textContent; doSearch(); } };
+  state.users = await api("/api/users");
+  $("#personas").innerHTML = state.users.map((u,i)=>`
+    <div class="persona" data-id="${u.id}">
+      <div class="avatar" style="background:${COLORS[i%COLORS.length]}">${esc(u.name[0])}</div>
+      <div><div class="nm">${esc(u.name)}</div><div class="sub">${u.age}歲・${esc(u.household)}・${u.n_orders} 筆訂單</div></div>
+    </div>`).join("");
+  $("#personas").onclick = e => { const p = e.target.closest(".persona"); if(p) selectUser(p.dataset.id); };
+  const qs = new URLSearchParams(location.search);   // 支援 ?q=...&user=U02 直接帶入
+  if(qs.get("q")) $("#q").value = qs.get("q");
+  await selectUser(qs.get("user") || state.users[0].id);
+}
+
+async function selectUser(id){
+  document.querySelectorAll(".persona").forEach(p=>p.classList.toggle("active", p.dataset.id===id));
+  const u = state.user = await api(`/api/users/${id}`);
+  const budget = u.budget_max ? `${fmt(u.budget_min)} ~ ${fmt(u.budget_max)}` : "未知";
+  const days = u.preferred_days ? `${u.preferred_days[0]} ~ ${u.preferred_days[1]} 天` : "未知";
+  $("#profile").innerHTML = `
+    <h3>使用者輪廓</h3>
+    <dl>
+      <dt>會員等級</dt><dd>${esc(u.member_tier)}</dd>
+      <dt>家庭組成</dt><dd>${esc(u.household)}</dd>
+      <dt>居住／出發</dt><dd>${esc(u.city)}・${esc(AIRPORT[u.home_airport]||u.home_airport)}</dd>
+      <dt>每人預算</dt><dd>${budget}</dd>
+      <dt>假期長度</dt><dd>${days}</dd>
+      <dt>旅遊風格</dt><dd>${(u.styles||[]).map(s=>`<span class="chip">${esc(s)}</span>`).join("") || "—"}</dd>
+      <dt>偏好向量</dt><dd>${u.has_profile_vector ? "✅ 已建立" : "❌ 無（冷啟動）"}</dd>
+    </dl>
+    <div class="note">${esc(u.note)}</div>
+    <h3>消費紀錄（${u.orders.length}）</h3>
+    ${u.orders.map(o=>`<div class="order" data-pid="${o.product_id}">${esc(o.title)}<br><span style="color:var(--muted)">${o.departure_date}・${o.pax}人・${"★".repeat(o.rating)}</span></div>`).join("") || "<div style='font-size:12px;color:var(--muted)'>無</div>"}
+    <h3 style="margin-top:12px">收藏清單</h3>
+    ${(u.wishlist_items||[]).map(w=>`<div class="order" style="border-color:#be185d;background:#fdf2f8" data-pid="${w.id}">❤ ${esc(w.title)}</div>`).join("") || "<div style='font-size:12px;color:var(--muted)'>無</div>"}
+    <h3 style="margin-top:12px">近期搜尋</h3>
+    ${(u.recent_searches||[]).map(s=>`<span class="chip">${esc(s)}</span>`).join("") || "<div style='font-size:12px;color:var(--muted)'>無</div>"}`;
+  $("#profile").onclick = e => { const o = e.target.closest("[data-pid]"); if(o) openProduct(o.dataset.pid); };
+  if($("#q").value.trim()) doSearch();
+}
+
+function weights(){ return {relevance:+$("#wRel").value/100, personal:+$("#wPer").value/100, business:+$("#wBiz").value/100}; }
+["Rel","Per","Biz"].forEach(k=>{ const el=$("#w"+k); el.oninput=()=>{$("#v"+k).textContent=(el.value/100).toFixed(2);}; el.onchange=()=>{ if(state.last) doSearch(); }; });
+$("#compare").onchange = () => { if(state.last) render(state.last); };
+$("#go").onclick = doSearch;
+$("#q").onkeydown = e => { if(e.key==="Enter" && !e.isComposing) doSearch(); };
+
+async function doSearch(){
+  const query = $("#q").value.trim(); if(!query) return;
+  const btn = $("#go"); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+  try{
+    const res = await api("/api/search", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({
+      query, user_id: state.user?.id, top_n: +$("#topn").value,
+      modes: $("#compare").checked ? ["keyword","vector","hybrid"] : ["hybrid"],
+      use_llm_parse: $("#llmParse").checked, use_llm_explain: $("#llmExplain").checked, weights: weights()})});
+    state.last = res; render(res);
+  }catch(err){ $("#cols").innerHTML = `<div class="panel" style="color:#b42318">搜尋失敗：${esc(err.message)}</div>`; }
+  finally{ btn.disabled=false; btn.textContent="搜尋"; }
+}
+
+function render(res){
+  $("#analysis").style.display = "grid";
+  const rel = new Set(res.relevant_ids||[]);
+  $("#tokens").innerHTML = (res.tokens||[]).map(t=>`<span class="chip tok">${esc(t)}</span>`).join("") || "—";
+  const p = res.parsed, hm = res.hybrid_meta || {};
+  if(p){
+    const f = [];
+    if(p.destinations?.length) f.push(`目的地：${p.destinations.join("、")}`);
+    if(p.min_price||p.max_price) f.push(`預算：${p.min_price?fmt(p.min_price):""} ~ ${p.max_price?fmt(p.max_price):""}`);
+    if(p.min_days||p.max_days) f.push(`天數：${p.min_days||""} ~ ${p.max_days||""}`);
+    if(p.product_types?.length) f.push(`類型：${p.product_types.join("、")}`);
+    if(p.departure_airport) f.push(`出發：${AIRPORT[p.departure_airport]}`);
+    if(p.months?.length) f.push(`月份：${p.months.join("、")}月`);
+    $("#parsed").innerHTML = (p.intent_summary?`<div style="font-weight:600;margin-bottom:4px">🎯 ${esc(p.intent_summary)}</div>`:"") +
+      f.map(x=>`<span class="chip filter">${esc(x)}</span>`).join("") +
+      (p.tags||[]).map(t=>`<span class="chip hit">#${esc(t)}</span>`).join("") +
+      `<div class="sem">向量搜尋用語句：${esc(p.semantic_query||res.query)}</div>`;
+  } else {
+    $("#parsed").innerHTML = `<div style="color:var(--muted);font-size:13px">${state.cfg.llm_available ? "已關閉 LLM 解析，直接用原始 query 做向量搜尋，不做結構化過濾。" : "未設定 OPENAI_API_KEY，LLM 功能停用。"}</div>` + (res.llm_error?`<div class="notice">LLM 錯誤：${esc(res.llm_error)}</div>`:"");
+  }
+  const t = res.timings||{};
+  $("#meta").innerHTML = `
+    ${hm.applied_filters?.length ? hm.applied_filters.map(x=>`<span class="chip filter">${esc(x)}</span>`).join("") : '<span style="font-size:12px;color:var(--muted)">無硬過濾條件</span>'}
+    ${hm.relaxed_level ? `<div class="notice">⚠ 完全符合條件的商品不足，已放寬條件補位（補位商品會降權並標示）</div>`:""}
+    ${hm.cold_start ? `<div class="notice">🆕 冷啟動：此使用者沒有偏好資料，個人化權重已轉給相關性與商業因素</div>`:""}
+    <div class="timing" style="margin-top:6px">召回候選 ${hm.candidates??"—"} 筆<br>
+    ${Object.entries(t).map(([k,v])=>`${k.replace("_ms","")}: ${v}ms`).join("<br>")}</div>
+    ${rel.size?`<div style="font-size:12px;color:var(--ok);margin-top:4px">✓ 這是評估集 query，綠色左框＝人工標註相關（共 ${rel.size} 筆）</div>`:""}`;
+
+  const compare = $("#compare").checked && res.keyword;
+  const cols = compare ? [
+    ["keyword","Jieba 關鍵字","舊方法：斷詞 + 全文檢索", res.keyword],
+    ["vector","Embedding 向量","純語意相似度", res.vector],
+    ["hybrid","Hybrid + 個人化","過濾＋RRF＋個人化重排", res.hybrid]] :
+    [["hybrid","Hybrid + 個人化","過濾＋RRF＋個人化重排", res.hybrid]];
+  $("#cols").className = "cols " + (compare ? "three" : "one");
+  $("#cols").innerHTML = cols.map(([key,name,desc,items])=>{
+    const hits = rel.size ? items.filter(i=>rel.has(i.id)).length : null;
+    return `<div class="col ${key}">
+      <div class="col-head"><h2>${name}</h2><span class="desc">${desc}</span>${hits!=null?`<span class="hits">命中 ${hits}/${items.length}</span>`:""}</div>
+      ${key==="hybrid"?`<div class="legend" style="margin-bottom:6px"><span style="--c:var(--rel)">相關性</span><span style="--c:var(--per)">個人化</span><span style="--c:var(--biz)">商業</span></div>`:""}
+      ${items.length ? items.map((it,i)=>card(key,it,i,rel)).join("") : `<div class="empty">沒有結果<br><span style="font-size:12px">${key==="keyword"?"斷詞後沒有任何詞命中商品":""}</span></div>`}
+    </div>`;}).join("");
+  $("#cols").onclick = e => { const c = e.target.closest(".card"); if(c) openProduct(c.dataset.id); };
+}
+
+function card(key,it,i,rel){
+  const s = it.scores||{}, nd = it.next_departure;
+  let extra = "";
+  if(key==="keyword") extra = `<div>${(it.matched_tokens||[]).map(t=>`<span class="chip tok">${esc(t)}</span>`).join("")}<span class="scoreline" style="display:inline">ts_rank ${s.keyword}</span></div>`;
+  if(key==="vector") extra = `<div class="scoreline">cosine ${s.cosine}</div>`;
+  if(key==="hybrid"){
+    const tot = s.final || 1e-9;
+    extra = `<div class="bar" title="final ${s.final}">
+        <div style="width:${s.w_relevance*100}%;background:var(--rel)"></div>
+        <div style="width:${s.w_personal*100}%;background:var(--per)"></div>
+        <div style="width:${s.w_business*100}%;background:var(--biz)"></div></div>
+      <div class="scoreline"><b style="color:var(--ink)">總分 ${s.final}</b><span>相關 ${s.relevance}</span><span>個人 ${s.personal}</span><span>商業 ${s.business}</span>
+        <span>關鍵字#${s.kw_rank??"—"}・向量#${s.vec_rank??"—"}</span></div>
+      <div style="margin-top:4px">${(it.reasons||[]).map(r=>`<span class="chip reason ${r.startsWith("⚠")?"warn":""}">${esc(r)}</span>`).join("")}</div>
+      ${it.explanation?`<div class="explain">💬 ${esc(it.explanation)}</div>`:""}`;
+  }
+  return `<div class="card ${rel.has(it.id)?"relevant":""}" data-id="${it.id}">
+    <div class="rank">#${i+1}</div>
+    <div class="title">${esc(it.title)}</div>
+    <div class="meta">${esc(it.region)}・${esc(it.product_type)}・${it.days}天・<span class="price">$${fmt(it.price)}</span> 起・${esc(AIRPORT[it.departure_airport]||it.departure_airport)}出發
+      ${nd?`・最近 ${nd.date.slice(5)}（剩${nd.seats_left}位）`:"・<span style='color:#b42318'>無可售團位</span>"}</div>
+    <div>${(it.tags||[]).slice(0,7).map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>
+    ${extra}</div>`;
+}
+
+async function openProduct(pid){
+  const p = await api(`/api/products/${pid}`);
+  $("#modal").innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:start;gap:10px">
+      <h2>${esc(p.title)}</h2><button class="btn ghost" style="padding:4px 12px" onclick="closeModal()">✕</button></div>
+    <div class="meta" style="color:var(--muted)">${esc(p.id)}・${esc(p.region)} ${esc(p.country)}・${esc(p.product_type)}・${p.days}天・${esc(p.airline)}・${esc(p.hotel_level)}・評分 ${p.rating}（${p.review_count} 則）</div>
+    <p style="font-size:22px;color:var(--accent);font-weight:700;margin:8px 0">$${fmt(p.price)} <span style="font-size:13px;color:var(--muted)">起／人</span></p>
+    <p>${esc(p.description)}</p>
+    <div>${p.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>
+    <h3 style="margin-top:14px">行程特色</h3><ul style="margin:4px 0;padding-left:20px">${p.highlights.map(h=>`<li>${esc(h)}</li>`).join("")}</ul>
+    <h3 style="margin-top:14px">每日行程</h3>${p.itinerary.map(d=>`<div class="day"><b>Day ${d.day}</b><div><b style="color:var(--ink)">${esc(d.title)}</b><br>${esc(d.content)}</div></div>`).join("")}
+    <h3 style="margin-top:14px">出發日期（即時資料，不放進 embedding）</h3>
+    <table><tr><th>日期</th><th>價格</th><th>剩餘名額</th></tr>${p.departures.map(d=>`<tr><td>${d.date}</td><td>$${fmt(d.price)}</td><td>${d.seats_left?d.seats_left:'<span style="color:#b42318">額滿</span>'}</td></tr>`).join("")}</table>`;
+  $("#modalBg").classList.add("show");
+}
+function closeModal(){ $("#modalBg").classList.remove("show"); }
+$("#modalBg").onclick = e => { if(e.target.id==="modalBg") closeModal(); };
+document.addEventListener("keydown", e => { if(e.key==="Escape") closeModal(); });
+
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav.tabs button").forEach(x=>x.classList.toggle("active",x===b));
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("show", p.id==="page-"+b.dataset.page));
+});
+
+$("#runEval").onclick = async () => {
+  const btn = $("#runEval"); btn.disabled = true; $("#evalStatus").textContent = "執行中…（使用 LLM 時第一次約需 30–60 秒）";
+  try{
+    const r = await api(`/api/eval?k=${$("#evalK").value}&llm=${$("#evalLlm").checked}`);
+    const N = {keyword:"Jieba 關鍵字（舊）", vector:"Embedding 向量", hybrid:"Hybrid（過濾+RRF）"};
+    const C = {keyword:"#c9a227", vector:"var(--rel)", hybrid:"var(--accent)"};
+    const metrics = [["recall",`Recall@${r.k}`],["ndcg",`NDCG@${r.k}`],["mrr","MRR"],["precision",`Precision@${r.k}`]];
+    const best = m => Math.max(...Object.values(r.summary).map(v=>v[m]));
+    $("#evalOut").innerHTML = `
+      <div class="metricbars">${metrics.slice(0,3).map(([m,l])=>`<div class="panel mb"><h3>${l}</h3>
+        ${Object.entries(r.summary).map(([k,v])=>`<div class="row"><span class="lbl">${N[k]}</span><div class="track"><div class="fill" style="width:${v[m]*100}%;background:${C[k]}"></div></div><b>${v[m].toFixed(3)}</b></div>`).join("")}</div>`).join("")}</div>
+      <div class="panel"><h3>各 query 的 NDCG@${r.k}（LLM 解析：${r.llm_parse?"開":"關"}）</h3>
+      <table class="grid"><tr><th>Query</th><th>相關數</th><th>Jieba</th><th>向量</th><th>Hybrid</th></tr>
+      ${r.per_query.map(q=>{const b=Math.max(q.keyword.ndcg,q.vector.ndcg,q.hybrid.ndcg);
+        return `<tr><td><a href="#" data-q="${esc(q.query)}">${esc(q.query)}</a></td><td class="num">${q.n_relevant}</td>${["keyword","vector","hybrid"].map(m=>`<td class="num ${q[m].ndcg===b&&b>0?"best":""}">${q[m].ndcg.toFixed(2)}</td>`).join("")}</tr>`}).join("")}
+      </table></div>`;
+    $("#evalOut").onclick = e => { const a = e.target.closest("a[data-q]"); if(a){ e.preventDefault(); $("#q").value=a.dataset.q; document.querySelector('nav.tabs button[data-page=search]').click(); doSearch(); } };
+    $("#evalStatus").textContent = "完成";
+  }catch(err){ $("#evalStatus").textContent = "失敗：" + err.message; }
+  finally{ btn.disabled = false; }
+};
+
+init();
+</script>
+</body>
+</html>
